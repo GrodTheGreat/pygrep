@@ -6,6 +6,9 @@ readme = "README.md"
 requires-python = ">=3.14"
 dependencies = []
 
+[project.scripts]
+pygrep = "pygrep.main:main"
+
 [dependency-groups]
 dev = [
     "pytest>=9.0.3",
