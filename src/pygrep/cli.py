@@ -1,15 +1,37 @@
 import argparse
 
+# TODO: These probably need refinement...
 parser = argparse.ArgumentParser(
-    prog="grep",
+    prog="pygrep - print lines that match patterns",
     usage="grep [OPTION]... PATTERNS [FILE]...\n"
     "grep [OPTION]... -e PATTERNS ... [FILE]...\n"
     "grep [OPTION]... -f PATTERN_FILE ... [FILE]...",
-    description="grep searches for patterns in each FILE.  In the synopsis's first form, which is used if no -e or -f options are present, the first operand PATTERNS is one or more patterns separated by newline characters, and grep prints each line that matches a pattern. Typically PATTERNS should be quoted when grep is used in a shell command.\n\nA FILE of “-” stands for standard input.  If no FILE is given,recursive searches examine the working directory, and nonrecursive searches read standard input.",
+    description="pygrep searches for patterns in each FILE. In the synopsis's first form, which is used if no -e or -f options are present, the first operand PATTERNS is one or more patterns separated by newline characters, and grep prints each line that matches a pattern. Typically PATTERNS should be quoted when grep is used in a shell command. A FILE of “-” stands for standard input.  If no FILE is given, recursive searches examine the working directory, and non-recursive searches read standard input.",
+)
+parser.add_argument(
+    "-G",
+    "--basic-regexp",
+    help="Interpret PATTERNS as basic regular expressions. This is the default.",
 )
 parser.add_argument(
     "-E",
     "--extended-regexp",
-    help="Interpret PATTERNS as extended regular expressions",
+    help="Interpret PATTERNS as extended regular expressions.",
+)
+parser.add_argument(
+    "-o",
+    "--only-matching",
+    help="Print only the matched (non-empty) parts of a matching line, with each such part on a separate output line.",
+)
+parser.add_argument(
+    "--color",
+    "--colour",
+    choices=["never", "always", "auto"],
+    help="Surround the matched (non-empty) strings, matching lines, context lines, file names, line numbers, byte offsets, and separators (for fields and groups of context lines) with escape sequences to display them in color on the terminal. The colors are defined by the environment variable GREP_COLORS.  WHEN is never, always, or auto.",
+)
+parser.add_argument(
+    "-r",
+    "--recursive",
+    help="Read all files under each directory, recursively, following symbolic links only if they are on the command line.  Note that if no file operand is given, grep searches the working directory.  This is equivalent to the -d recurse option.",
 )
 args = parser.parse_args()
