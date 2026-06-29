@@ -11,16 +11,19 @@ parser = argparse.ArgumentParser(
 parser.add_argument(
     "-G",
     "--basic-regexp",
+    action="store_true",
     help="Interpret PATTERNS as basic regular expressions. This is the default.",
 )
 parser.add_argument(
     "-E",
     "--extended-regexp",
+    action="store_true",
     help="Interpret PATTERNS as extended regular expressions.",
 )
 parser.add_argument(
     "-o",
     "--only-matching",
+    action="store_true",
     help="Print only the matched (non-empty) parts of a matching line, with each such part on a separate output line.",
 )
 parser.add_argument(
@@ -32,6 +35,7 @@ parser.add_argument(
 parser.add_argument(
     "-r",
     "--recursive",
+    action="store_true",
     help="Read all files under each directory, recursively, following symbolic links only if they are on the command line.  Note that if no file operand is given, grep searches the working directory.  This is equivalent to the -d recurse option.",
 )
 args = parser.parse_args()
