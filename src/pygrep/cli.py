@@ -43,4 +43,6 @@ parser.add_argument(
     help="like --directories=recurse",
     # description="Read all files under each directory, recursively, following symbolic links only if they are on the command line.  Note that if no file operand is given, grep searches the working directory.  This is equivalent to the -d recurse option.",
 )
+parser.add_argument("patterns")
+parser.add_argument("files", nargs="*", metavar="file")
 args = parser.parse_args()
