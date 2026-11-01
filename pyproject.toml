@@ -11,7 +11,7 @@ requires = ["uv_build>=0.11.25,<0.12"]
 build-backend = "uv_build"
 
 [project.scripts]
-pygrep = "pygrep.main:main"
+pygrep = "pygrep.cli:main"
 
 [dependency-groups]
 dev = [
