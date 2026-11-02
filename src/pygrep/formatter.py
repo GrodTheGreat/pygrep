@@ -9,6 +9,8 @@ COLOR_START: Literal["\033[01;31m"] = "\033[01;31m"
 COLOR_END: Literal["\033[m"] = "\033[m"
 
 
+# TODO: This isn't good yet. Want to split the main grep loop from IO/formatting
+#  concerns, but seems to be fairly cross cutting. Need to come up with a better solution...
 class Formatter:
     name = "pygrep"
 
@@ -67,6 +69,8 @@ class Formatter:
     ) -> str:
         txt = ""
         for match in matches:
+            if match.start == match.end:
+                continue
             txt += self._prefix(path)
             text = line[match.start : match.end]
             txt += f"{self._highlight(text)}\n"
