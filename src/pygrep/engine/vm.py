@@ -25,6 +25,10 @@ class Branch:
     slots: tuple[int, ...]
 
 
+# TODO: Real grep does leftmost/longest match. This backtracking engine will give you that
+#  but will always run slow. A Perl engine version would return on the first match. Add as an option?
+# TODO: Backtracking works and gives back refs, but is very slow. Add an interface for things like
+#  a pyke vm if pattern is fully regular.
 class VirtualMachine:
     def __init__(self, program: Program) -> None:
         self._program = program
@@ -99,6 +103,7 @@ class VirtualMachine:
                     slots[slot] = sp
                     ip += 1
                 case SplitInstruction(first, second):
+                    # TODO: Definitely a better way to do the slots then a full convert to tuple <-> list...
                     self._call_stack.append(Branch(second, sp, tuple(slots)))
                     ip = first
                 case JumpInstruction(to):

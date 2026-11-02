@@ -80,7 +80,7 @@ class Grep:
 
     def _handle_usage_error(self, exc: UsageError) -> None:
         if exc.message:
-            self._env.stderr.write(f"{Grep.name}: {exc.message}")
+            self._env.stderr.write(f"{Grep.name}: {exc.message}\n")
         self._env.stderr.write(
             f"usage: {Grep.name} [-Eor] [--color=when] [pattern] [file ...]\n"
         )
