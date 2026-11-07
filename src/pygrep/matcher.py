@@ -3,14 +3,18 @@ from pygrep.engine.compiler import Compiler
 from pygrep.engine.disassembler import disassemble
 from pygrep.engine.dumper import dump
 from pygrep.engine.parser import BasicParser, ExtendedParser
+from pygrep.engine.tree_walker import TreeWalker
 from pygrep.engine.vm import VirtualMachine
 
 
 class Matcher:
-    def __init__(self, vm: VirtualMachine, dmp: str, dis: str) -> None:
+    def __init__(
+        self, vm: VirtualMachine, dmp: str, dis: str, walker: TreeWalker
+    ) -> None:
         self.vm = vm
         self.dmp = dmp  # TODO: maybe better to use callbacks?
         self.dis = dis  # TODO: maybe better to use callbacks?
+        self.walker = walker
 
     @classmethod
     def compile(cls, pattern: str, is_extended: bool) -> Matcher:
@@ -23,7 +27,7 @@ class Matcher:
         compiler = Compiler(ast)
         program = compiler.compile()
         dis = disassemble(program)
-        return cls(VirtualMachine(program), dmp, dis)
+        return cls(VirtualMachine(program), dmp, dis, TreeWalker(ast))
 
     def test(self, candidate: str) -> bool:
         return self.search(candidate) is not None
@@ -42,7 +46,7 @@ class Matcher:
         matches = []
         i = 0
         while i <= len(candidate):
-            match = self.vm.execute(candidate, i)
+            match = self.walker.execute(candidate, i)
             if match:
                 matches.append(match)
                 i = match.end if match.end != i else i + 1

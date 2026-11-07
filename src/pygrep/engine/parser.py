@@ -87,7 +87,7 @@ class ExtendedParser(Parser):
             self._reader.report("parentheses not balanced")
         if (
             self._highest_backref is not None
-            and self._highest_backref > self._num_groups
+            and self._highest_backref >= self._num_groups
         ):
             self._reader.report("invalid backreference number")
         return RegexAst(ast, self._num_groups)
@@ -103,11 +103,7 @@ class ExtendedParser(Parser):
 
     def _concatenation(self) -> AstNode:
         items = []
-        while (
-            not self._reader.is_at_end()
-            and self._reader.peek() != "|"
-            and self._reader.peek() != ")"
-        ):
+        while not self._reader.is_at_end() and self._reader.peek() not in "|)":
             items.append(self._repetition())
         if not items:
             return EmptyNode()
@@ -251,7 +247,7 @@ class BasicParser(Parser):
             self._reader.report("parentheses not balanced")
         if (
             self._highest_backref is not None
-            and self._highest_backref > self._num_groups
+            and self._highest_backref >= self._num_groups
         ):
             self._reader.report("invalid backreference number")
         return RegexAst(ast, self._num_groups)
@@ -268,7 +264,11 @@ class BasicParser(Parser):
     def _concatenation(self) -> AstNode:
         items = []
         while not self._reader.is_at_end():
-            if self._reader.peek() == "\\" and self._reader.peek_next() in "|)":
+            if (
+                self._reader.peek() == "\\"
+                and self._reader.peek_next() in "|)"
+                and self._reader.peek_next() != ""
+            ):
                 break
             items.append(self._repetition())
         match len(items):
